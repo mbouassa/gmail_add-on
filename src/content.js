@@ -62,7 +62,7 @@ function showModal() {
   modal.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
   modal.style.zIndex = "1000";
   modal.style.width = "600px";
-  modal.style.height = "400px";
+  modal.style.height = "550px";
   modal.style.borderRadius = "20px"
 
   // create the container element
@@ -75,7 +75,8 @@ function showModal() {
   // create the title element
   var title = document.createElement("h2");
   title.textContent = "Filos";
-  title.style.display = "inline-block";
+  title.style.display = "block";
+  title.style.fontSize = "20px"
 
   container.appendChild(title);
 
@@ -105,27 +106,45 @@ function showModal() {
   // create the text element
   var context = document.createElement("p");
   context.textContent = "Email Context:";
+  context.style.fontSize = "15px"
   container.appendChild(context);
   
   // create the text input element
   var con_input = document.createElement("input");
   con_input.placeholder = "Enter a summary here..."; 
+  con_input.style.fontSize = "15px"
+
 
   con_input.type = "text";
   con_input.style.width = "590px"
-  con_input.style.height = "200px"
+  con_input.style.height = "150px"
   con_input.style.borderRadius = "20px"
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
   con_input.style.lineHeight = "200px";
 
-
-
-
-
-
-
   container.appendChild(con_input);
+
+
+
+  // create the text input element
+  var email_input = document.createElement("input");
+  email_input.placeholder = ""; 
+
+  email_input.type = "text";
+  email_input.style.width = "590px"
+  email_input.style.height = "120px"
+  email_input.style.borderRadius = "20px"
+  email_input.style.backgroundColor = "#f0f0f0";
+  //con_input.style.placeholderColor = "lightgrey";
+  email_input.style.lineHeight = "200px";
+
+
+
+
+
+
+
 
   // create the checkbox element
 var checkbox = document.createElement("input");
@@ -134,80 +153,281 @@ checkbox.type = "checkbox";
 var label = document.createElement("label");
 label.textContent = "Show email summary";
 label.style.marginRight = "10px";
+label.style.fontSize = "15px"
+
 
 container.appendChild(label);
 container.appendChild(checkbox);
 
 checkbox.style.marginTop = "20px";
+checkbox.style.marginBottom = "20px";
+
 
 // store the summary and sum_input elements in variables
-var summary, sum_input;
+var summary, num_sent, dropdown, to_hide;
+
+// create the number of sentences element
+var message = document.createElement("p");
+
+// create the text input element
+var sum_input = document.createElement("input");
+sum_input.type = "text";
+sum_input.style.width = "590px"
+sum_input.style.height = "50px"
+sum_input.style.borderRadius = "20px"
+sum_input.style.backgroundColor = "#f0f0f0";
+
+
+message.textContent = "Email is currently generating...";
+message.style.fontSize = "15px"
+
+
+message.style.marginRight = "10px";
+
+
+// create the text input element
+var generated_email = document.createElement("input");
+generated_email.type = "text";
+generated_email.style.width = "590px"
+generated_email.style.height = "100px"
+generated_email.style.borderRadius = "20px"
+generated_email.style.backgroundColor = "#f0f0f0";
+
 
 checkbox.addEventListener("click", function() {
+  
   if (checkbox.checked) {
-    // Adjust the height of the container element
-    modal.style.height = "480px"
-    // create the text element
-    summary = document.createElement("p");
-    summary.textContent = "Email Summary:";
-    container.appendChild(summary);
+
+    if (but_act == 1) {
+
+      modal.style.height = "750px"
+
+
+      container.removeChild(details);
+
+      container.removeChild(desc_input);
+      container.removeChild(tone_p);
+
+      container.removeChild(tone);
+
+      container.removeChild(message)
+      container.removeChild(generated_email)
+      container.appendChild(sum_input);
+      container.appendChild(details);
+
+      container.appendChild(desc_input);
+      container.appendChild(tone_p);
+
+      container.appendChild(tone);
+
+      container.appendChild(message)
+      container.appendChild(generated_email)
+
+
+
+
+    }
+
+    else {
+
+
+      
+      // Adjust the height of the container element
+
+      modal.style.height = "620px"
+
+      to_hide = 1
+
+      container.removeChild(details);
+
+      container.removeChild(desc_input);
+      container.removeChild(tone_p);
+
+      container.removeChild(tone);
+
+
+      
+    
+      
+    
+      container.appendChild(sum_input);
+    
+      // create the number of sentences element
+      num_sent = document.createElement("p");
+      num_sent.textContent = "Summary detail level:";
+      num_sent.style.display = "inline-block"
+      num_sent.style.fontSize = "15px"
+
+    
+      num_sent.style.marginRight = "10px";
+      container.appendChild(num_sent);
+    
+      // create the dropdown element
+      dropdown = document.createElement("select");
+      dropdown.style.display = "inline-block";
+      dropdown.style.fontSize = "15px";
+
+    
+      // create the options for the dropdown
+      var option1 = document.createElement("option");
+      option1.textContent = "1 sentence";
+      option1.style.fontSize = "15px"
+
+      option1.value = "1";
+      dropdown.appendChild(option1);
+    
+      var option2 = document.createElement("option");
+      option2.textContent = "2 sentences";
+      option2.style.fontSize = "15px"
+
+      option2.value = "2";
+      dropdown.appendChild(option2);
+    
+      var option3 = document.createElement("option");
+      option3.textContent = "5 sentences";
+      option3.style.fontSize = "15px"
+
+      option3.value = "5";
+      dropdown.appendChild(option3);
+    
+      container.appendChild(dropdown);
+
+      container.appendChild(details);
+
+      container.appendChild(desc_input)
+      container.appendChild(tone_p)
+      container.appendChild(tone)
+
+    }
+    
+
+
+
   
-    // create the text input element
-    sum_input = document.createElement("input");
-    sum_input.type = "text";
-    sum_input.style.width = "590px"
-    sum_input.style.height = "50px"
-    sum_input.style.borderRadius = "20px"
-    sum_input.style.backgroundColor = "#f0f0f0";
-
-    container.appendChild(sum_input);
-
-    // create the number of sentences element
-    num_sent = document.createElement("p");
-    num_sent.textContent = "Summary detail level:";
-    //num_sent.style.display = "inline-block"
-
-  num_sent.style.marginRight = "10px";
-  container.appendChild(num_sent);
-
-  // create the dropdown element
-  dropdown = document.createElement("select");
-  dropdown.style.display = "inline-block";
-
-  // create the options for the dropdown
-  var option1 = document.createElement("option");
-  option1.textContent = "1 sentence";
-  option1.value = "1";
-  dropdown.appendChild(option1);
-
-  var option2 = document.createElement("option");
-  option2.textContent = "2 sentences";
-  option2.value = "2";
-  dropdown.appendChild(option2);
-
-  var option3 = document.createElement("option");
-  option3.textContent = "5 sentences";
-  option3.value = "5";
-  dropdown.appendChild(option3);
-
-  container.appendChild(dropdown);
-  dropdown = document.createElement("select");
-
-  
-
-
+    
   } else {
-    // hide the email summary text
-    modal.style.height = "400px"
 
-    container.removeChild(summary);
-    container.removeChild(sum_input);
-    container.removeChild(dropdown);
-    container.removeChild(num_sent);
+    if (but_act == 1) {
+      modal.style.height = "720px"
+      // hide the email summary text
+      to_hide = 0
+
+    
+
+      container.removeChild(sum_input);
+      container.removeChild(dropdown);
+      container.removeChild(num_sent);
+
+    }
+
+    else {
+        // hide the email summary text
+        to_hide = 0
+        modal.style.height = "550px";
+
+      
+    
+      container.removeChild(sum_input);
+      container.removeChild(dropdown);
+      container.removeChild(num_sent);
+    }
   }
+  
+
+  
 });
 
 container.appendChild(checkbox);
+// create the email
+var details = document.createElement("p");
+details.textContent = "Give a brief description of the reply you want:";
+details.style.fontSize = "15px"
+
+container.appendChild(details);
+
+// create the text input element
+var desc_input = document.createElement("input");
+desc_input.type = "text";
+desc_input.style.width = "590px"
+desc_input.style.height = "50px"
+desc_input.style.borderRadius = "20px"
+desc_input.style.backgroundColor = "#f0f0f0";
+desc_input.style.marginBottom = "10px";
+
+
+container.appendChild(desc_input);
+
+
+// create the number of sentences element
+var tone_p = document.createElement("p");
+tone_p.textContent = "Tone:";
+tone_p.style.display = "inline-block"
+tone_p.style.fontSize = "15px"
+
+
+tone_p.style.marginRight = "10px";
+container.appendChild(tone_p);
+
+// create the dropdown element
+var tone = document.createElement("select");
+tone.style.display = "inline-block";
+
+tone.style.fontSize = "15px";
+
+
+// create the options for the dropdown
+var opt1 = document.createElement("option");
+opt1.textContent = "Formal";
+opt1.style.fontSize = "15px"
+
+opt1.value = "1";
+tone.appendChild(opt1);
+
+var opt2 = document.createElement("option");
+opt2.textContent = "Semi-Formal";
+opt2.style.fontSize = "15px"
+
+opt2.value = "2";
+tone.appendChild(opt2);
+
+var opt3 = document.createElement("option");
+opt3.style.fontSize = "15px"
+
+opt3.textContent = "Informal";
+opt3.value = "5";
+tone.appendChild(opt3);
+
+container.appendChild(tone);
+
+
+// create the button element
+var generateButton = document.createElement("button");
+generateButton.textContent = "Generate Email";
+generateButton.style.padding = "10px 20px";
+generateButton.style.border = "none";
+generateButton.style.borderRadius = "5px";
+generateButton.style.backgroundColor = "#007bff";
+generateButton.style.color = "white";
+generateButton.style.position = "absolute";
+generateButton.style.bottom = "20px";
+generateButton.style.right = "20px";
+
+container.appendChild(generateButton);
+
+var but_act = 0;
+
+generateButton.addEventListener("click", function() {
+
+  modal.style.height = "720px"
+  but_act = 1
+  container.appendChild(message)
+  container.appendChild(generated_email)
+  
+
+
+});
+
+
 
   
 
