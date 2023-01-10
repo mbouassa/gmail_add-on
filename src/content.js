@@ -60,10 +60,25 @@ function showModal() {
   modal.style.backgroundColor = "white";
   modal.style.padding = "20px";
   modal.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
+
   modal.style.zIndex = "1000";
   modal.style.width = "600px";
   modal.style.height = "550px";
-  modal.style.borderRadius = "20px"
+  modal.style.borderRadius = "20px";
+
+  // create the backdrop element
+  var backdrop = document.createElement("div");
+  backdrop.style.position = "fixed";
+  backdrop.style.top = "0";
+  backdrop.style.left = "0";
+  backdrop.style.width = "100%";
+  backdrop.style.height = "100%";
+  backdrop.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+  backdrop.style.zIndex = "999";
+
+  // add the modal and backdrop to the document
+  document.body.appendChild(backdrop);
+  
 
   // create the container element
   var container = document.createElement("div");
@@ -80,13 +95,14 @@ function showModal() {
 
   container.appendChild(title);
 
+
   // create the close button
   
   var closeButton = document.createElement("button");
   closeButton.innerHTML = "&times;";
   closeButton.style.position = "absolute";
-  closeButton.style.top = "0";
-  closeButton.style.right = "0";
+  closeButton.style.top = "10px";
+  closeButton.style.right = "10px";
 
   closeButton.style.fontSize = "24px";
   closeButton.style.color = "black";
@@ -97,9 +113,22 @@ function showModal() {
   closeButton.style.border = "none";
   
   closeButton.style.backgroundColor = "transparent"
+  closeButton.style.cursor = "pointer";
+
+
+  closeButton.addEventListener("mouseover", function() {
+    closeButton.style.transform = "scale(1.05)";
+
+  });
+  closeButton.addEventListener("mouseout", function() {
+    closeButton.style.transform = "scale(1)";
+
+  });
 
   closeButton.addEventListener("click", function() {
     document.body.removeChild(modal);
+    document.body.removeChild(backdrop);
+
   });
   container.appendChild(closeButton);
 
@@ -118,7 +147,9 @@ function showModal() {
   con_input.type = "text";
   con_input.style.width = "590px"
   con_input.style.height = "150px"
+
   con_input.style.borderRadius = "20px"
+
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
   con_input.style.lineHeight = "200px";
@@ -400,17 +431,30 @@ tone.appendChild(opt3);
 container.appendChild(tone);
 
 
-// create the button element
 var generateButton = document.createElement("button");
 generateButton.textContent = "Generate Email";
 generateButton.style.padding = "10px 20px";
 generateButton.style.border = "none";
-generateButton.style.borderRadius = "5px";
-generateButton.style.backgroundColor = "#007bff";
+generateButton.style.borderRadius = "10px";
+generateButton.style.background = "linear-gradient(to right, #4169E1, #7B68EE)";
 generateButton.style.color = "white";
 generateButton.style.position = "absolute";
 generateButton.style.bottom = "20px";
 generateButton.style.right = "20px";
+generateButton.style.cursor = "pointer";
+
+generateButton.addEventListener("mouseover", function() {
+    generateButton.style.backgroundColor = "#005d99";
+    generateButton.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+    generateButton.style.transform = "scale(1.05)";
+
+});
+generateButton.addEventListener("mouseout", function() {
+    generateButton.style.backgroundColor = "#007bff";
+    generateButton.style.boxShadow = "none";
+    generateButton.style.transform = "scale(1)";
+
+});
 
 container.appendChild(generateButton);
 
