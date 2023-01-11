@@ -336,7 +336,7 @@ checkbox.addEventListener("click", function() {
   } else {
 
     if (but_act == 1) {
-      modal.style.height = "720px"
+      modal.style.height = "730px"
       // hide the email summary text
       to_hide = 0
 
@@ -463,21 +463,21 @@ dropdown.style.height = "25px";
 
 // create the options for the dropdown
 var option1 = document.createElement("option");
-option1.textContent = "short";
+option1.textContent = "Short";
 option1.style.fontSize = "15px"
 
 option1.value = "1";
 dropdown.appendChild(option1);
 
 var option2 = document.createElement("option");
-option2.textContent = "medium";
+option2.textContent = "Medium";
 option2.style.fontSize = "15px"
 
 option2.value = "2";
 dropdown.appendChild(option2);
 
 var option3 = document.createElement("option");
-option3.textContent = "long";
+option3.textContent = "Long";
 option3.style.fontSize = "15px"
 
 option3.value = "5";
