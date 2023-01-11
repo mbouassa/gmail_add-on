@@ -62,9 +62,16 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
         }catch(e){
           console.log(e);
         }
+
+        if(typeof body === 'undefined') {
+          showModal("")
+        }
+        else {
+        console.log(body)
         var new_bdy = RemoveHTMLTags(body);
         console.log(new_bdy)
         showModal(new_bdy);
+        }
       }
  
 
@@ -73,6 +80,7 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
 });
 
 function showModal(msg) {
+  console.log(msg)
   // create the modal element
   var modal = document.createElement("div");
   modal.style.position = "fixed";
@@ -162,8 +170,10 @@ function showModal(msg) {
   
   // create the text input element
   var con_input = document.createElement("textarea");
-  con_input.placeholder = "Enter a summary here..."; 
+  con_input.style.resize = "none";
+  con_input.placeholder = "If you want to reply to an email, paste the email you want to respond to here. Otherwise, leave this field empty"; 
   con_input.style.fontSize = "15px"
+  con_input.style.padding = "4px"
   
 
 
@@ -243,11 +253,14 @@ generated_email.style.border = "1px solid #4169E1";
 
 generated_email.style.borderRadius = "20px"
 generated_email.style.backgroundColor = "#f0f0f0";
+var tick = 0
+
 
 
 checkbox.addEventListener("click", function() {
   
   if (checkbox.checked) {
+    tick = 1
 
     if (but_act == 1) {
 
@@ -378,6 +391,9 @@ desc_input.placeholder = "Write a reply to this email..."
 desc_input.type = "text";
 desc_input.style.width = "590px"
 desc_input.style.height = "50px"
+desc_input.style.fontSize = "15px"
+
+
 desc_input.style.border = "1px solid #4169E1";
 
 desc_input.style.borderRadius = "20px"
@@ -521,10 +537,24 @@ var but_act = 0;
 
 generateButton.addEventListener("click", function() {
 
+  if (tick == 1) {
+    modal.style.height = "780px"
+    but_act = 1
+    container.appendChild(message)
+    container.appendChild(generated_email)
+
+  }
+
+  else {
+
+  
+
   modal.style.height = "720px"
   but_act = 1
   container.appendChild(message)
   container.appendChild(generated_email)
+
+  }
   
 
 
