@@ -229,6 +229,7 @@ message.textContent = "Email is currently generating...";
 message.style.fontSize = "15px"
 
 
+
 message.style.marginRight = "10px";
 
 
@@ -237,6 +238,8 @@ var generated_email = document.createElement("input");
 generated_email.type = "text";
 generated_email.style.width = "590px"
 generated_email.style.height = "100px"
+generated_email.style.border = "1px solid #4169E1";
+
 generated_email.style.borderRadius = "20px"
 generated_email.style.backgroundColor = "#f0f0f0";
 
@@ -247,7 +250,7 @@ checkbox.addEventListener("click", function() {
 
     if (but_act == 1) {
 
-      modal.style.height = "750px"
+      modal.style.height = "780px"
 
 
       container.removeChild(details);
