@@ -1,10 +1,20 @@
 import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
+import "gmail-js";
 
 //envVariables= process.env
 //const {API_OPEN} = envVariables
 //const apiKey = API_OPEN;
 //console.log(apiKey)
+const GmailFactory = require("gmail-js");
+const gmail = new GmailFactory.Gmail();
+
+function RemoveHTMLTags(html) {
+  var regX = /(<([^>]+)>)/ig;
+  var text =  html.replace(regX, "").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+  text = text.replace(/\s+/g,' ').trim();
+  return text;
+}
 
 async function generateText(prompt) {
   
@@ -42,7 +52,19 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
       iconUrl:
         "https://lh5.googleusercontent.com/itq66nh65lfCick8cJ-OPuqZ8OUDTIxjCc25dkc4WUT1JG8XG3z6-eboCu63_uDXSqMnLRdlvQ=s128-h128-e365",
       onClick: function(event){
-        showModal();
+
+        try{
+          var email_id = gmail.new.get.email_id();
+
+          var gmail_dom = gmail.dom.email(email_id);
+          var body = gmail_dom.body();
+          console.log(body);
+        }catch(e){
+          console.log(e);
+        }
+        var new_bdy = RemoveHTMLTags(body);
+        console.log(new_bdy)
+        showModal(new_bdy);
       }
  
 
@@ -50,7 +72,7 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   });
 });
 
-function showModal() {
+function showModal(msg) {
   // create the modal element
   var modal = document.createElement("div");
   modal.style.position = "fixed";
@@ -154,7 +176,8 @@ function showModal() {
   con_input.style.borderRadius = "20px";
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
-
+  con_input.style.lineHeight = "20px";
+  con_input.value = msg;
   container.appendChild(con_input);
 
 
@@ -192,8 +215,8 @@ var summary, num_sent, dropdown, to_hide;
 var message = document.createElement("p");
 
 // create the text input element
-var sum_input = document.createElement("input");
-sum_input.type = "text";
+var sum_input = document.createElement("textarea");
+// sum_input.type = "textarea";
 sum_input.style.width = "590px"
 sum_input.style.height = "50px"
 sum_input.style.border = "1px solid #4169E1";
@@ -501,8 +524,6 @@ generateButton.addEventListener("click", function() {
 
 
 });
-
-
 
   
 
