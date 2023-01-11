@@ -142,33 +142,24 @@ function showModal() {
   var con_input = document.createElement("input");
   con_input.placeholder = "Enter a summary here..."; 
   con_input.style.fontSize = "15px"
+  
 
 
   con_input.type = "text";
+  con_input.style.borderImage = "linear-gradient(to right, #4169E1, #7B68EE) 1";
   con_input.style.width = "590px"
   con_input.style.height = "150px"
 
-  con_input.style.borderRadius = "20px"
-
+  con_input.style.border = "1px solid #4169E1";
+  con_input.style.borderRadius = "20px";
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
-  con_input.style.lineHeight = "200px";
 
   container.appendChild(con_input);
 
 
 
-  // create the text input element
-  var email_input = document.createElement("input");
-  email_input.placeholder = ""; 
-
-  email_input.type = "text";
-  email_input.style.width = "590px"
-  email_input.style.height = "120px"
-  email_input.style.borderRadius = "20px"
-  email_input.style.backgroundColor = "#f0f0f0";
-  //con_input.style.placeholderColor = "lightgrey";
-  email_input.style.lineHeight = "200px";
+  
 
 
 
@@ -205,6 +196,8 @@ var sum_input = document.createElement("input");
 sum_input.type = "text";
 sum_input.style.width = "590px"
 sum_input.style.height = "50px"
+sum_input.style.border = "1px solid #4169E1";
+
 sum_input.style.borderRadius = "20px"
 sum_input.style.backgroundColor = "#f0f0f0";
 
@@ -250,6 +243,11 @@ checkbox.addEventListener("click", function() {
       container.appendChild(tone_p);
 
       container.appendChild(tone);
+      container.appendChild(line)
+
+      container.appendChild(num_sent);
+      container.appendChild(dropdown)
+
 
       container.appendChild(message)
       container.appendChild(generated_email)
@@ -281,53 +279,26 @@ checkbox.addEventListener("click", function() {
     
       
     
-      container.appendChild(sum_input);
     
-      // create the number of sentences element
-      num_sent = document.createElement("p");
-      num_sent.textContent = "Summary detail level:";
-      num_sent.style.display = "inline-block"
-      num_sent.style.fontSize = "15px"
+      
+    
+      
+    
 
-    
-      num_sent.style.marginRight = "10px";
-      container.appendChild(num_sent);
-    
-      // create the dropdown element
-      dropdown = document.createElement("select");
-      dropdown.style.display = "inline-block";
-      dropdown.style.fontSize = "15px";
-
-    
-      // create the options for the dropdown
-      var option1 = document.createElement("option");
-      option1.textContent = "1 sentence";
-      option1.style.fontSize = "15px"
-
-      option1.value = "1";
-      dropdown.appendChild(option1);
-    
-      var option2 = document.createElement("option");
-      option2.textContent = "2 sentences";
-      option2.style.fontSize = "15px"
-
-      option2.value = "2";
-      dropdown.appendChild(option2);
-    
-      var option3 = document.createElement("option");
-      option3.textContent = "5 sentences";
-      option3.style.fontSize = "15px"
-
-      option3.value = "5";
-      dropdown.appendChild(option3);
-    
-      container.appendChild(dropdown);
+      container.appendChild(sum_input)
 
       container.appendChild(details);
 
       container.appendChild(desc_input)
       container.appendChild(tone_p)
       container.appendChild(tone)
+      container.appendChild(line)
+
+      container.appendChild(num_sent);
+      container.appendChild(dropdown)
+
+
+
 
     }
     
@@ -359,8 +330,6 @@ checkbox.addEventListener("click", function() {
       
     
       container.removeChild(sum_input);
-      container.removeChild(dropdown);
-      container.removeChild(num_sent);
     }
   }
   
@@ -381,6 +350,8 @@ var desc_input = document.createElement("input");
 desc_input.type = "text";
 desc_input.style.width = "590px"
 desc_input.style.height = "50px"
+desc_input.style.border = "1px solid #4169E1";
+
 desc_input.style.borderRadius = "20px"
 desc_input.style.backgroundColor = "#f0f0f0";
 desc_input.style.marginBottom = "10px";
@@ -399,12 +370,14 @@ tone_p.style.fontSize = "15px"
 tone_p.style.marginRight = "10px";
 container.appendChild(tone_p);
 
-// create the dropdown element
+// create the tone element
 var tone = document.createElement("select");
 tone.style.display = "inline-block";
-
 tone.style.fontSize = "15px";
-
+//tone.style.padding = "2px"
+tone.style.backgroundColor = '#f5f5f5';
+tone.style.borderRadius = '15px';
+tone.style.height = "25px";
 
 // create the options for the dropdown
 var opt1 = document.createElement("option");
@@ -429,6 +402,64 @@ opt3.value = "5";
 tone.appendChild(opt3);
 
 container.appendChild(tone);
+
+// create the number of sentences element
+var line = document.createElement("p");
+line.textContent = "";
+line.style.display = "block";
+line.style.marginTop = "0px";
+line.style.marginBottom = "0px";
+
+
+container.append(line)
+
+// create the number of sentences element
+var num_sent = document.createElement("p");
+num_sent.textContent = "Email length:";
+num_sent.style.fontSize = "15px"
+num_sent.style.display = "inline-block";
+
+
+
+num_sent.style.marginRight = "10px";
+container.appendChild(num_sent);
+
+// create the dropdown element
+var dropdown = document.createElement("select");
+dropdown.style.display = "inline-block";
+dropdown.style.fontSize = "15px";
+//dropdown.style.padding = '2px';
+dropdown.style.backgroundColor = '#f5f5f5';
+dropdown.style.borderRadius = '15px';
+dropdown.style.height = "25px";
+
+
+
+// create the options for the dropdown
+var option1 = document.createElement("option");
+option1.textContent = "short";
+option1.style.fontSize = "15px"
+
+option1.value = "1";
+dropdown.appendChild(option1);
+
+var option2 = document.createElement("option");
+option2.textContent = "medium";
+option2.style.fontSize = "15px"
+
+option2.value = "2";
+dropdown.appendChild(option2);
+
+var option3 = document.createElement("option");
+option3.textContent = "long";
+option3.style.fontSize = "15px"
+
+option3.value = "5";
+dropdown.appendChild(option3);
+
+container.append(dropdown)
+
+
 
 
 var generateButton = document.createElement("button");
