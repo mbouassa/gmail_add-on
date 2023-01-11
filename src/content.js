@@ -161,13 +161,13 @@ function showModal(msg) {
   container.appendChild(context);
   
   // create the text input element
-  var con_input = document.createElement("input");
+  var con_input = document.createElement("textarea");
   con_input.placeholder = "Enter a summary here..."; 
   con_input.style.fontSize = "15px"
   
 
 
-  con_input.type = "text";
+  // con_input.type = "text";
   con_input.style.borderImage = "linear-gradient(to right, #4169E1, #7B68EE) 1";
   con_input.style.width = "590px"
   con_input.style.height = "150px"
@@ -177,6 +177,7 @@ function showModal(msg) {
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
   con_input.style.lineHeight = "20px";
+  con_input.style.padding = "5px";
   con_input.value = msg;
   container.appendChild(con_input);
 
@@ -373,6 +374,7 @@ container.appendChild(details);
 
 // create the text input element
 var desc_input = document.createElement("input");
+desc_input.placeholder = "Write a reply to this email..."
 desc_input.type = "text";
 desc_input.style.width = "590px"
 desc_input.style.height = "50px"
