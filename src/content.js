@@ -2,6 +2,8 @@ import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
+const apiKey = "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"
+
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -30,12 +32,14 @@ async function generateText(msg) {
         max_tokens:2000,
         model: 'text-davinci-002'
       })
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
-
-  return response.choices['0'].text;
+    });
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error(error));
+    const json = await response.json();
+    console.log(json.choices[0].text);
+    // Return the generated text
+    return json.choices[0].text;
 
 }
 
@@ -73,7 +77,7 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   });
 });
 
-function showModal(msg) {
+async function showModal(msg) {
   console.log(msg)
   // create the modal element
   var modal = document.createElement("div");
@@ -185,73 +189,62 @@ function showModal(msg) {
   con_input.value = msg;
   container.appendChild(con_input);
 
-
-
-  
-
-
-
-
-
-
-
-
   // create the checkbox element
-var checkbox = document.createElement("input");
-checkbox.type = "checkbox";
-// create the label element
-var label = document.createElement("label");
-label.textContent = "Show email summary";
-label.style.marginRight = "10px";
-label.style.fontSize = "15px"
+  var checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  // create the label element
+  var label = document.createElement("label");
+  label.textContent = "Show email summary";
+  label.style.marginRight = "10px";
+  label.style.fontSize = "15px"
 
 
-container.appendChild(label);
-container.appendChild(checkbox);
+  container.appendChild(label);
+  container.appendChild(checkbox);
 
-checkbox.style.marginTop = "20px";
-checkbox.style.marginBottom = "20px";
-
-
-// store the summary and sum_input elements in variables
-var summary, num_sent, dropdown, to_hide;
-
-// create the number of sentences element
-var message = document.createElement("p");
-
-// create the text input element
-var sum_input = document.createElement("textarea");
-// sum_input.type = "textarea";
-sum_input.style.width = "590px"
-sum_input.style.height = "50px"
-sum_input.style.border = "1px solid #4169E1";
-
-sum_input.style.borderRadius = "20px"
-sum_input.style.backgroundColor = "#f0f0f0";
+  checkbox.style.marginTop = "20px";
+  checkbox.style.marginBottom = "20px";
 
 
-message.textContent = "Email is currently generating...";
-message.style.fontSize = "15px"
+  // store the summary and sum_input elements in variables
+  var summary, num_sent, dropdown, to_hide;
+
+  // create the number of sentences element
+  var message = document.createElement("p");
+
+  // create the text input element
+  var sum_input = document.createElement("textarea");
+  // sum_input.type = "textarea";
+  sum_input.style.width = "590px"
+  sum_input.style.height = "50px"
+  sum_input.style.border = "1px solid #4169E1";
+
+  sum_input.style.borderRadius = "20px"
+  sum_input.style.backgroundColor = "#f0f0f0";
 
 
-
-message.style.marginRight = "10px";
-
-
-// create the text input element
-var generated_email = document.createElement("input");
-generated_email.type = "text";
-generated_email.style.width = "590px"
-generated_email.style.height = "100px"
-generated_email.style.border = "1px solid #4169E1";
-
-generated_email.style.borderRadius = "20px"
-generated_email.style.backgroundColor = "#f0f0f0";
-var tick = 0
+  message.textContent = "Email is currently generating...";
+  message.style.fontSize = "15px"
 
 
 
-checkbox.addEventListener("click", function() {
+  message.style.marginRight = "10px";
+
+
+  // create the text input element
+  var generated_email = document.createElement("input");
+  generated_email.type = "text";
+  generated_email.style.width = "590px"
+  generated_email.style.height = "100px"
+  generated_email.style.border = "1px solid #4169E1";
+
+  generated_email.style.borderRadius = "20px"
+  generated_email.style.backgroundColor = "#f0f0f0";
+  var tick = 0
+
+
+
+  checkbox.addEventListener("click", function() {
   
   if (checkbox.checked) {
     tick = 1
@@ -369,202 +362,186 @@ checkbox.addEventListener("click", function() {
   
 
   
-});
+  });
 
-container.appendChild(checkbox);
-// create the email
-var details = document.createElement("p");
-details.textContent = "Give a brief description of the reply you want:";
-details.style.fontSize = "15px"
+  container.appendChild(checkbox);
+  // create the email
+  var details = document.createElement("p");
+  details.textContent = "Give a brief description of the reply you want:";
+  details.style.fontSize = "15px"
 
-container.appendChild(details);
+  container.appendChild(details);
 
-// create the text input element
-var desc_input = document.createElement("input");
-desc_input.placeholder = "Write a reply to this email..."
-desc_input.type = "text";
-desc_input.style.width = "590px"
-desc_input.style.height = "50px"
-desc_input.style.fontSize = "15px"
-
-
-desc_input.style.border = "1px solid #4169E1";
-
-desc_input.style.borderRadius = "20px"
-desc_input.style.backgroundColor = "#f0f0f0";
-desc_input.style.marginBottom = "10px";
+  // create the text input element
+  var desc_input = document.createElement("input");
+  desc_input.placeholder = "Write a reply to this email..."
+  desc_input.type = "text";
+  desc_input.style.width = "590px"
+  desc_input.style.height = "50px"
+  desc_input.style.fontSize = "15px"
 
 
-container.appendChild(desc_input);
+  desc_input.style.border = "1px solid #4169E1";
+
+  desc_input.style.borderRadius = "20px"
+  desc_input.style.backgroundColor = "#f0f0f0";
+  desc_input.style.marginBottom = "10px";
 
 
-// create the number of sentences element
-var tone_p = document.createElement("p");
-tone_p.textContent = "Tone:";
-tone_p.style.display = "inline-block"
-tone_p.style.fontSize = "15px"
+  container.appendChild(desc_input);
 
 
-tone_p.style.marginRight = "10px";
-container.appendChild(tone_p);
-
-// create the tone element
-var tone = document.createElement("select");
-tone.style.display = "inline-block";
-tone.style.fontSize = "15px";
-//tone.style.padding = "2px"
-tone.style.backgroundColor = '#f5f5f5';
-tone.style.borderRadius = '15px';
-tone.style.height = "25px";
-
-// create the options for the dropdown
-var opt1 = document.createElement("option");
-opt1.textContent = "Formal";
-opt1.style.fontSize = "15px"
-
-opt1.value = "1";
-tone.appendChild(opt1);
-
-var opt2 = document.createElement("option");
-opt2.textContent = "Semi-Formal";
-opt2.style.fontSize = "15px"
-
-opt2.value = "2";
-tone.appendChild(opt2);
-
-var opt3 = document.createElement("option");
-opt3.style.fontSize = "15px"
-
-opt3.textContent = "Informal";
-opt3.value = "5";
-tone.appendChild(opt3);
-
-container.appendChild(tone);
-
-// create the number of sentences element
-var line = document.createElement("p");
-line.textContent = "";
-line.style.display = "block";
-line.style.marginTop = "0px";
-line.style.marginBottom = "0px";
+  // create the number of sentences element
+  var tone_p = document.createElement("p");
+  tone_p.textContent = "Tone:";
+  tone_p.style.display = "inline-block"
+  tone_p.style.fontSize = "15px"
 
 
-container.append(line)
+  tone_p.style.marginRight = "10px";
+  container.appendChild(tone_p);
 
-// create the number of sentences element
-var num_sent = document.createElement("p");
-num_sent.textContent = "Email length:";
-num_sent.style.fontSize = "15px"
-num_sent.style.display = "inline-block";
+  // create the tone element
+  var tone = document.createElement("select");
+  tone.style.display = "inline-block";
+  tone.style.fontSize = "15px";
+  //tone.style.padding = "2px"
+  tone.style.backgroundColor = '#f5f5f5';
+  tone.style.borderRadius = '15px';
+  tone.style.height = "25px";
+
+  // create the options for the dropdown
+  var opt1 = document.createElement("option");
+  opt1.textContent = "Formal";
+  opt1.style.fontSize = "15px"
+
+  opt1.value = "1";
+  tone.appendChild(opt1);
+
+  var opt2 = document.createElement("option");
+  opt2.textContent = "Semi-Formal";
+  opt2.style.fontSize = "15px"
+
+  opt2.value = "2";
+  tone.appendChild(opt2);
+
+  var opt3 = document.createElement("option");
+  opt3.style.fontSize = "15px"
+
+  opt3.textContent = "Informal";
+  opt3.value = "5";
+  tone.appendChild(opt3);
+
+  container.appendChild(tone);
+
+  // create the number of sentences element
+  var line = document.createElement("p");
+  line.textContent = "";
+  line.style.display = "block";
+  line.style.marginTop = "0px";
+  line.style.marginBottom = "0px";
 
 
+  container.append(line)
 
-num_sent.style.marginRight = "10px";
-container.appendChild(num_sent);
-
-// create the dropdown element
-var dropdown = document.createElement("select");
-dropdown.style.display = "inline-block";
-dropdown.style.fontSize = "15px";
-//dropdown.style.padding = '2px';
-dropdown.style.backgroundColor = '#f5f5f5';
-dropdown.style.borderRadius = '15px';
-dropdown.style.height = "25px";
+  // create the number of sentences element
+  var num_sent = document.createElement("p");
+  num_sent.textContent = "Email length:";
+  num_sent.style.fontSize = "15px"
+  num_sent.style.display = "inline-block";
 
 
 
-// create the options for the dropdown
-var option1 = document.createElement("option");
-option1.textContent = "Short";
-option1.style.fontSize = "15px"
+  num_sent.style.marginRight = "10px";
+  container.appendChild(num_sent);
 
-option1.value = "1";
-dropdown.appendChild(option1);
-
-var option2 = document.createElement("option");
-option2.textContent = "Medium";
-option2.style.fontSize = "15px"
-
-option2.value = "2";
-dropdown.appendChild(option2);
-
-var option3 = document.createElement("option");
-option3.textContent = "Long";
-option3.style.fontSize = "15px"
-
-option3.value = "5";
-dropdown.appendChild(option3);
-
-container.append(dropdown)
+  // create the dropdown element
+  var dropdown = document.createElement("select");
+  dropdown.style.display = "inline-block";
+  dropdown.style.fontSize = "15px";
+  //dropdown.style.padding = '2px';
+  dropdown.style.backgroundColor = '#f5f5f5';
+  dropdown.style.borderRadius = '15px';
+  dropdown.style.height = "25px";
 
 
 
+  // create the options for the dropdown
+  var option1 = document.createElement("option");
+  option1.textContent = "Short";
+  option1.style.fontSize = "15px"
 
-var generateButton = document.createElement("button");
-generateButton.textContent = "Generate Email";
-generateButton.style.padding = "10px 20px";
-generateButton.style.border = "none";
-generateButton.style.borderRadius = "10px";
-generateButton.style.background = "linear-gradient(to right, #4169E1, #7B68EE)";
-generateButton.style.color = "white";
-generateButton.style.position = "absolute";
-generateButton.style.bottom = "20px";
-generateButton.style.right = "20px";
-generateButton.style.cursor = "pointer";
+  option1.value = "1";
+  dropdown.appendChild(option1);
 
-generateButton.addEventListener("mouseover", function() {
-    generateButton.style.backgroundColor = "#005d99";
-    generateButton.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-    generateButton.style.transform = "scale(1.05)";
+  var option2 = document.createElement("option");
+  option2.textContent = "Medium";
+  option2.style.fontSize = "15px"
 
-});
-generateButton.addEventListener("mouseout", function() {
-    generateButton.style.backgroundColor = "#007bff";
-    generateButton.style.boxShadow = "none";
-    generateButton.style.transform = "scale(1)";
+  option2.value = "2";
+  dropdown.appendChild(option2);
 
-});
+  var option3 = document.createElement("option");
+  option3.textContent = "Long";
+  option3.style.fontSize = "15px"
 
-container.appendChild(generateButton);
+  option3.value = "5";
+  dropdown.appendChild(option3);
 
-var but_act = 0;
+  container.append(dropdown)
 
-generateButton.addEventListener("click", function() {
 
-  if (tick == 1) {
-    modal.style.height = "780px"
+
+
+  var generateButton = document.createElement("button");
+  generateButton.textContent = "Generate Email";
+  generateButton.style.padding = "10px 20px";
+  generateButton.style.border = "none";
+  generateButton.style.borderRadius = "10px";
+  generateButton.style.background = "linear-gradient(to right, #4169E1, #7B68EE)";
+  generateButton.style.color = "white";
+  generateButton.style.position = "absolute";
+  generateButton.style.bottom = "20px";
+  generateButton.style.right = "20px";
+  generateButton.style.cursor = "pointer";
+
+  generateButton.addEventListener("mouseover", function() {
+      generateButton.style.backgroundColor = "#005d99";
+      generateButton.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+      generateButton.style.transform = "scale(1.05)";
+
+  });
+  generateButton.addEventListener("mouseout", function() {
+      generateButton.style.backgroundColor = "#007bff";
+      generateButton.style.boxShadow = "none";
+      generateButton.style.transform = "scale(1)";
+
+  });
+
+  container.appendChild(generateButton);
+
+  var but_act = 0;
+
+  generateButton.addEventListener("click", async function() {
+
+    if (tick == 1) {
+      modal.style.height = "780px"
+      but_act = 1
+      container.appendChild(message)
+      container.appendChild(generated_email)
+    }
+    else {
+    modal.style.height = "720px"
     but_act = 1
     container.appendChild(message)
     container.appendChild(generated_email)
-  }
-  else {
-  modal.style.height = "720px"
-  but_act = 1
-  container.appendChild(message)
-  container.appendChild(generated_email)
-  }
-  console.log(msg);
-  console.log(msg + '\n' + desc_input.value)
-  var response = generateText(msg + '\n' + desc_input.value);
-  generated_email.value = response;
+    }
+    console.log(msg);
+    console.log(msg + '\n' + desc_input.value)
+    var response = await generateText(msg + '\n' + desc_input.value);
+    generated_email.value = response;
 
-});
-
-  
-
-  
-
-
-  
-
-
-  
-  
-
-  
-
-  
-
+  });
   // add the modal to the document
   document.body.appendChild(modal);
 }
