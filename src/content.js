@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
 
-const apiKey = "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"
+const apiKey = "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"
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -53,7 +53,7 @@ async function generateSummary(msg) {
        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: msg + "/nGenerate a summary of the above",
+        prompt: msg + "/nGenerate a summary of the above email:",
         temperature: 0.5,
         max_tokens:2000,
         model: 'text-davinci-003'
@@ -244,10 +244,15 @@ async function showModal(msg) {
   var sum_input = document.createElement("textarea");
   // sum_input.type = "textarea";
   sum_input.style.width = "590px"
+  sum_input.style.resize = "none";
+  sum_input.style.fontSize = "15px"
+
+
   sum_input.style.height = "50px"
   sum_input.style.border = "1px solid #4169E1";
   sum_input.style.borderRadius = "20px"
   sum_input.style.backgroundColor = "#f0f0f0";
+  sum_input.style.padding = "4px"
   message.textContent = "Email is currently generating...";
   message.style.fontSize = "15px"
   message.style.marginRight = "10px";
@@ -260,6 +265,7 @@ async function showModal(msg) {
   generated_email.style.width = "590px"
   generated_email.style.height = "100px"
   generated_email.style.border = "1px solid #4169E1";
+  generated_email.style.fontSize = "15px";
 
   generated_email.style.borderRadius = "20px"
   generated_email.style.backgroundColor = "#f0f0f0";
@@ -353,6 +359,7 @@ async function showModal(msg) {
   desc_input.style.width = "590px"
   desc_input.style.height = "50px"
   desc_input.style.fontSize = "15px"
+  desc_input.style.padding = "4px"
 
 
   desc_input.style.border = "1px solid #4169E1";
