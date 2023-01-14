@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
 
-
+const apiKey = "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"
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -30,7 +30,7 @@ async function generateText(msg) {
         prompt: msg,
         temperature: 0.5,
         max_tokens:2000,
-        model: 'text-davinci-002'
+        model: 'text-davinci-003'
       })
     });
     // .then(response => response.json())
@@ -42,6 +42,34 @@ async function generateText(msg) {
     return json.choices[0].text;
 
 }
+async function generateSummary(msg) {
+  
+
+  // Make the API request
+  const response = await fetch('https://api.openai.com/v1/completions', {
+    method: 'POST',
+    headers: {
+       'Content-Type': 'application/json',
+       'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        prompt: msg + "/nGenerate a summary of the above",
+        temperature: 0.5,
+        max_tokens:2000,
+        model: 'text-davinci-003'
+      })
+    });
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error(error));
+    const json = await response.json();
+    console.log(json.choices[0].text);
+    // Return the generated text
+    return json.choices[0].text;
+
+}
+
+
 
 InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   sdk.Compose.registerComposeViewHandler((composeView) => {
@@ -218,22 +246,17 @@ async function showModal(msg) {
   sum_input.style.width = "590px"
   sum_input.style.height = "50px"
   sum_input.style.border = "1px solid #4169E1";
-
   sum_input.style.borderRadius = "20px"
   sum_input.style.backgroundColor = "#f0f0f0";
-
-
   message.textContent = "Email is currently generating...";
   message.style.fontSize = "15px"
-
-
-
   message.style.marginRight = "10px";
 
 
   // create the text input element
-  var generated_email = document.createElement("input");
-  generated_email.type = "text";
+  var generated_email = document.createElement("textarea");
+  // generated_email.type = "text";
+  generated_email.style.padding = "4px"
   generated_email.style.width = "590px"
   generated_email.style.height = "100px"
   generated_email.style.border = "1px solid #4169E1";
@@ -242,9 +265,7 @@ async function showModal(msg) {
   generated_email.style.backgroundColor = "#f0f0f0";
   var tick = 0
 
-
-
-  checkbox.addEventListener("click", function() {
+  checkbox.addEventListener("click", async function() {
   
   if (checkbox.checked) {
     tick = 1
@@ -253,86 +274,42 @@ async function showModal(msg) {
 
       modal.style.height = "780px"
 
-
       container.removeChild(details);
-
       container.removeChild(desc_input);
       container.removeChild(tone_p);
-
       container.removeChild(tone);
-
       container.removeChild(message)
       container.removeChild(generated_email)
       container.appendChild(sum_input);
       container.appendChild(details);
-
       container.appendChild(desc_input);
       container.appendChild(tone_p);
-
       container.appendChild(tone);
       container.appendChild(line)
-
       container.appendChild(num_sent);
       container.appendChild(dropdown)
-
-
       container.appendChild(message)
       container.appendChild(generated_email)
+    }else {
 
-
-
-
-    }
-
-    else {
-
-
-      
       // Adjust the height of the container element
-
       modal.style.height = "620px"
 
       to_hide = 1
 
       container.removeChild(details);
-
       container.removeChild(desc_input);
       container.removeChild(tone_p);
-
       container.removeChild(tone);
-
-
-      
-    
-      
-    
-    
-      
-    
-      
-    
-
       container.appendChild(sum_input)
-
       container.appendChild(details);
-
       container.appendChild(desc_input)
       container.appendChild(tone_p)
       container.appendChild(tone)
       container.appendChild(line)
-
       container.appendChild(num_sent);
       container.appendChild(dropdown)
-
-
-
-
     }
-    
-
-
-
-  
     
   } else {
 
@@ -340,13 +317,9 @@ async function showModal(msg) {
       modal.style.height = "730px"
       // hide the email summary text
       to_hide = 0
-
-    
-
       container.removeChild(sum_input);
       container.removeChild(dropdown);
       container.removeChild(num_sent);
-
     }
 
     else {
@@ -354,12 +327,13 @@ async function showModal(msg) {
         to_hide = 0
         modal.style.height = "550px";
 
-      
-    
       container.removeChild(sum_input);
     }
   }
-  
+  if(sum_input.value == ""){
+    var summary = await generateSummary(msg);
+    sum_input.value = summary;
+  }
 
   
   });
