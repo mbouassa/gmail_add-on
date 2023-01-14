@@ -3,7 +3,6 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
 
-const apiKey = "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"
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -11,7 +10,7 @@ const gmail = new GmailFactory.Gmail();
 
 function RemoveHTMLTags(html) {
   var regX = /(<([^>]+)>)/ig;
-  var text =  html.replace(regX, "").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+  var text =  html.replace(regX, " ").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
   text = text.replace(/\s+/g,' ').trim();
   return text;
 }
@@ -53,7 +52,7 @@ async function generateSummary(msg) {
        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: msg + "/nGenerate a summary of the above",
+        prompt: msg + "/nGenerate a summary of the above email:",
         temperature: 0.5,
         max_tokens:2000,
         model: 'text-davinci-003'
@@ -332,7 +331,7 @@ async function showModal(msg) {
   }
   if(sum_input.value == ""){
     var summary = await generateSummary(msg);
-    sum_input.value = summary;
+    sum_input.value = summary.trim();
   }
 
   
@@ -512,8 +511,8 @@ async function showModal(msg) {
     }
     console.log(msg);
     console.log(msg + '\n' + desc_input.value)
-    var response = await generateText(msg + '\n' + desc_input.value);
-    generated_email.value = response;
+    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + "and " + tone.options[tone.selectedIndex].text);
+    generated_email.value = response.trim();
 
   });
   // add the modal to the document
