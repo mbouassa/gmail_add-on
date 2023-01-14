@@ -2,12 +2,11 @@ import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
-//envVariables= process.env
-//const {API_OPEN} = envVariables
-//const apiKey = API_OPEN;
-//console.log(apiKey)
+
+// console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
+
 
 function RemoveHTMLTags(html) {
   var regX = /(<([^>]+)>)/ig;
@@ -25,23 +24,35 @@ async function generateText(prompt) {
     headers: {
        'Content-Type': 'application/json',
        'Authorization': `Bearer ${apiKey}`,
-       'Access-Control-Allow-Origin': '*'
-     },
-     body: JSON.stringify({
-       "model": "text-davinci-002",
-       "prompt": prompt,
-       "max_tokens": 2048
-     })
-  });
-  const json = await response.json();
-  console.log(json)
-  console.log(json.choices.text)
+      },
+      body: JSON.stringify({
+        prompt: 'What is the capital of France?',
+        temperature: 0.5,
+        max_tokens:50,
+        model: 'text-davinci-002'
+      })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
 
-  console.log(json.choices)
-  console.log(json.choices["0"].text)
+  return;
 
-
-  return json.choices["0"].text;
+    // const configuration = new Configuration({
+    //   apiKey:  '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',
+    // });
+    // const openai = new OpenAIApi(configuration);
+    
+    // const response = await openai.createCompletion("text-davinci-002", {
+    // prompt: "Write a blog post on vadala onions",
+    // temperature: 0.7,
+    // max_tokens: 256,
+    // top_p: 1,
+    // frequency_penalty: 0,
+    // presence_penalty: 0,
+    // });
+    
+    // console.log(response.choices[0].text);
 
 }
 
@@ -542,20 +553,15 @@ generateButton.addEventListener("click", function() {
     but_act = 1
     container.appendChild(message)
     container.appendChild(generated_email)
-
   }
-
   else {
-
-  
-
   modal.style.height = "720px"
   but_act = 1
   container.appendChild(message)
   container.appendChild(generated_email)
-
   }
-  
+  console.log(msg)
+  console.log(generateText(msg));
 
 
 });

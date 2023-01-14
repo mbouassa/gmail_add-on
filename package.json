@@ -22,11 +22,11 @@
   "homepage": "https://github.com/InboxSDK/hello-world#readme",
   "dependencies": {
     "@inboxsdk/core": "^0.2.20",
-    "gmail-js": "^1.1.6",
-    "openai": "^3.1.0"
+    "gmail-js": "^1.1.6"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
+    "openai": "^3.1.0",
     "rimraf": "^3.0.2",
     "source-map-loader": "^4.0.1",
     "webpack": "^5.65.0",
