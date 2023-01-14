@@ -2,7 +2,7 @@ import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
-const apiKey = "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"
+
 
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
