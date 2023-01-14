@@ -2,7 +2,6 @@ import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
-
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -15,7 +14,7 @@ function RemoveHTMLTags(html) {
   return text;
 }
 
-async function generateText(prompt) {
+async function generateText(msg) {
   
 
   // Make the API request
@@ -26,9 +25,9 @@ async function generateText(prompt) {
        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        prompt: 'What is the capital of France?',
+        prompt: msg,
         temperature: 0.5,
-        max_tokens:50,
+        max_tokens:2000,
         model: 'text-davinci-002'
       })
     })
@@ -36,23 +35,7 @@ async function generateText(prompt) {
     .then(data => console.log(data))
     .catch(error => console.error(error));
 
-  return;
-
-    // const configuration = new Configuration({
-    //   apiKey:  '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',
-    // });
-    // const openai = new OpenAIApi(configuration);
-    
-    // const response = await openai.createCompletion("text-davinci-002", {
-    // prompt: "Write a blog post on vadala onions",
-    // temperature: 0.7,
-    // max_tokens: 256,
-    // top_p: 1,
-    // frequency_penalty: 0,
-    // presence_penalty: 0,
-    // });
-    
-    // console.log(response.choices[0].text);
+  return response.choices['0'].text;
 
 }
 
@@ -560,9 +543,10 @@ generateButton.addEventListener("click", function() {
   container.appendChild(message)
   container.appendChild(generated_email)
   }
-  console.log(msg)
-  console.log(generateText(msg));
-
+  console.log(msg);
+  console.log(msg + '\n' + desc_input.value)
+  var response = generateText(msg + '\n' + desc_input.value);
+  generated_email.value = response;
 
 });
 
