@@ -199,21 +199,20 @@ async function showModal(msg) {
   con_input.style.resize = "none";
   con_input.placeholder = "If you want to reply to an email, paste the email you want to respond to here. Otherwise, leave this field empty"; 
   con_input.style.fontSize = "15px"
-  con_input.style.padding = "4px"
+  con_input.style.padding = "10px"
   
 
 
   // con_input.type = "text";
   con_input.style.borderImage = "linear-gradient(to right, #4169E1, #7B68EE) 1";
   con_input.style.width = "590px"
-  con_input.style.height = "150px"
+  con_input.style.height = "130px"
 
   con_input.style.border = "1px solid #4169E1";
   con_input.style.borderRadius = "20px";
   con_input.style.backgroundColor = "#f0f0f0";
   //con_input.style.placeholderColor = "lightgrey";
   con_input.style.lineHeight = "20px";
-  con_input.style.padding = "5px";
   con_input.value = msg;
   container.appendChild(con_input);
 
@@ -252,7 +251,9 @@ async function showModal(msg) {
   sum_input.style.border = "1px solid #4169E1";
   sum_input.style.borderRadius = "20px"
   sum_input.style.backgroundColor = "#f0f0f0";
-  sum_input.style.padding = "4px"
+  sum_input.style.padding = "10px"
+  sum_input.readOnly = true;
+  sum_input.disabled = true;
   message.textContent = "Email is currently generating...";
   message.style.fontSize = "15px"
   message.style.marginRight = "10px";
@@ -261,7 +262,7 @@ async function showModal(msg) {
   // create the text input element
   var generated_email = document.createElement("textarea");
   // generated_email.type = "text";
-  generated_email.style.padding = "4px"
+  generated_email.style.padding = "10px"
   generated_email.style.width = "590px"
   generated_email.style.height = "100px"
   generated_email.style.border = "1px solid #4169E1";
@@ -357,9 +358,9 @@ async function showModal(msg) {
   desc_input.placeholder = "Write a reply to this email..."
   desc_input.type = "text";
   desc_input.style.width = "590px"
-  desc_input.style.height = "50px"
+  desc_input.style.height = "40px"
   desc_input.style.fontSize = "15px"
-  desc_input.style.padding = "4px"
+  desc_input.style.paddingLeft = "10px"
 
 
   desc_input.style.border = "1px solid #4169E1";
@@ -392,6 +393,14 @@ async function showModal(msg) {
   tone.style.height = "25px";
 
   // create the options for the dropdown
+  var opt0 = document.createElement("option");
+  opt0.textContent = "";
+  opt0.style.fontSize = "15px"
+
+  opt0.value = "0";
+  tone.appendChild(opt0);
+
+  // create the options for the dropdown
   var opt1 = document.createElement("option");
   opt1.textContent = "Formal";
   opt1.style.fontSize = "15px"
@@ -414,6 +423,11 @@ async function showModal(msg) {
   tone.appendChild(opt3);
 
   container.appendChild(tone);
+
+  tone.addEventListener("change", function(event) {
+    var selectedOption = event.target.value;
+    console.log("Selected option: ", selectedOption);
+  });
 
   // create the number of sentences element
   var line = document.createElement("p");
@@ -447,6 +461,14 @@ async function showModal(msg) {
 
 
 
+
+  // create the options for the dropdown
+  var option0 = document.createElement("option");
+  option0.textContent = "";
+  option0.style.fontSize = "15px"
+
+  option0.value = "0";
+  dropdown.appendChild(option0);
   // create the options for the dropdown
   var option1 = document.createElement("option");
   option1.textContent = "Short";
@@ -519,8 +541,36 @@ async function showModal(msg) {
     }
     console.log(msg);
     console.log(msg + '\n' + desc_input.value)
-    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + "and " + tone.options[tone.selectedIndex].text);
+    console.log("mmmmmmmmm")
+    console.log(tone.options[tone.selectedIndex].text)
+
+    if (dropdown.options[dropdown.selectedIndex].text == "" && tone.options[tone.selectedIndex].text == "") {
+      var response = await generateText(msg + '\n' + desc_input.value + ".");
+      console.log(msg + '\n' + desc_input.value)
+      generated_email.value = response.trim();
+
+
+    }
+    else if (dropdown.options[dropdown.selectedIndex].text == "" ){
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text);
+      console.log(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text)
+      generated_email.value = response.trim();
+
+    }
+    else if (tone.options[tone.selectedIndex].text == "") {
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text);
+      console.log(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
+      generated_email.value = response.trim();
+
+
+
+
+    }
+    else {
+
+    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text);
     generated_email.value = response.trim();
+    }
 
   });
   // add the modal to the document
