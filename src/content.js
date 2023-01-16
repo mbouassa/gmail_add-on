@@ -3,7 +3,7 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
 
-const apiKey = "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"
+const apiKey = "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"
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -73,6 +73,7 @@ async function generateSummary(msg) {
 
 InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   sdk.Compose.registerComposeViewHandler((composeView) => {
+    
     composeView.addButton({
       title: "Generate Email Response",
       iconUrl:
@@ -90,13 +91,13 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
         }
 
         if(typeof body === 'undefined') {
-          showModal("")
+          showModal("", composeView)
         }
         else {
         console.log(body)
         var new_bdy = RemoveHTMLTags(body);
         console.log(new_bdy)
-        showModal(new_bdy);
+        showModal(new_bdy, composeView);
         }
       }
  
@@ -105,7 +106,7 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   });
 });
 
-async function showModal(msg) {
+async function showModal(msg, composeView) {
   console.log(msg)
   // create the modal element
   var modal = document.createElement("div");
@@ -206,7 +207,7 @@ async function showModal(msg) {
   // con_input.type = "text";
   con_input.style.borderImage = "linear-gradient(to right, #4169E1, #7B68EE) 1";
   con_input.style.width = "590px"
-  con_input.style.height = "130px"
+  con_input.style.height = "120px"
 
   con_input.style.border = "1px solid #4169E1";
   con_input.style.borderRadius = "20px";
@@ -267,6 +268,7 @@ async function showModal(msg) {
   generated_email.style.height = "100px"
   generated_email.style.border = "1px solid #4169E1";
   generated_email.style.fontSize = "15px";
+  generated_email.style.resize = "none";
 
   generated_email.style.borderRadius = "20px"
   generated_email.style.backgroundColor = "#f0f0f0";
@@ -507,6 +509,8 @@ async function showModal(msg) {
   generateButton.style.bottom = "20px";
   generateButton.style.right = "20px";
   generateButton.style.cursor = "pointer";
+  generateButton.style.width = "150px" // Add this line
+
 
   generateButton.addEventListener("mouseover", function() {
       generateButton.style.backgroundColor = "#005d99";
@@ -523,9 +527,60 @@ async function showModal(msg) {
 
   container.appendChild(generateButton);
 
+  // create the insert email button
+  var insertButton = document.createElement("button");
+  insertButton.textContent = "Insert Email";
+  insertButton.style.display = "inline-block";
+  insertButton.style.float = "left";
+  insertButton.style.position = "absolute";
+  insertButton.style.color = "white";
+  insertButton.style.background = "linear-gradient(to right, #ff0000, #7B68EE)";
+
+
+
+  insertButton.style.width = "150px" // Add this line
+
+
+
+  insertButton.style.marginRight = "10px";
+  insertButton.style.padding = "10px 20px";
+  insertButton.style.border = "none";
+  insertButton.style.borderRadius = "10px";
+  insertButton.style.bottom = "20px";
+  insertButton.style.left = "20px";
+  insertButton.style.cursor = "pointer";
+  insertButton.addEventListener("mouseover", function() {
+    insertButton.style.backgroundColor = "#005d99";
+    insertButton.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+    insertButton.style.transform = "scale(1.05)";
+    
+    });
+    insertButton.addEventListener("mouseout", function() {
+    insertButton.style.backgroundColor = "#007bff";
+    insertButton.style.boxShadow = "none";
+    insertButton.style.transform = "scale(1)";
+    
+    });
+    insertButton.addEventListener("click", function() {
+      // Close the modal
+      modal.remove();
+      backdrop.remove();
+    
+      var formattedEmail = generated_email.value.replace(/\n/g, "<br>");
+      composeView.setBodyHTML(formattedEmail);
+    });
+    
+
+ 
+
   var but_act = 0;
 
+
+
+// Add the spinner to the button
+
   generateButton.addEventListener("click", async function() {
+
 
     if (tick == 1) {
       modal.style.height = "780px"
@@ -548,19 +603,24 @@ async function showModal(msg) {
       var response = await generateText(msg + '\n' + desc_input.value + ".");
       console.log(msg + '\n' + desc_input.value)
       generated_email.value = response.trim();
+      container.appendChild(insertButton);
+
 
 
     }
     else if (dropdown.options[dropdown.selectedIndex].text == "" ){
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text);
-      console.log(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text)
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ".");
       generated_email.value = response.trim();
+      container.appendChild(insertButton);
+
 
     }
     else if (tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text);
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ".");
       console.log(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
       generated_email.value = response.trim();
+      container.appendChild(insertButton);
+
 
 
 
@@ -568,8 +628,10 @@ async function showModal(msg) {
     }
     else {
 
-    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text);
+    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ".");
     generated_email.value = response.trim();
+    container.appendChild(insertButton);
+
     }
 
   });
