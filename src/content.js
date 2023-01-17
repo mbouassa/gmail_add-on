@@ -680,7 +680,7 @@ var insert = 0
     console.log(tone.options[tone.selectedIndex].text)
 
     if (dropdown.options[dropdown.selectedIndex].text == "" && tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ".");
+      var response = await generateText(msg + '\n' + desc_input.value + ":");
       console.log(msg + '\n' + desc_input.value)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
@@ -690,7 +690,7 @@ var insert = 0
 
     }
     else if (dropdown.options[dropdown.selectedIndex].text == "" ){
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ".");
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ":");
       generated_email.value = response.trim();
       container.appendChild(insertButton);
       insert = 1
@@ -699,7 +699,7 @@ var insert = 0
 
     }
     else if (tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ".");
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ":");
       console.log(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
@@ -713,7 +713,7 @@ var insert = 0
     }
     else {
 
-    var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ".");
+    var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ":");
     generated_email.value = response.trim();
 
     container.appendChild(insertButton);
