@@ -9,10 +9,18 @@ const gmail = new GmailFactory.Gmail();
 
 
 function RemoveHTMLTags(html) {
-  var regX = /(<([^>]+)>)/ig;
-  var text =  html.replace(regX, " ").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
-  text = text.replace(/\s+/g,' ').trim();
-  return text;
+  // var regX = /(<([^>]+)>)/ig;
+  // var text =  html.replace(regX, " ").replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+  // text = text.replace(/\s+/g,' ').trim();
+  // return text;
+  html = html.replace(/<br>/g, "$br$");
+  html = html.replace(/(?:\r\n|\r|\n)/g, '$br$');
+  var tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  html = tmp.textContent || tmp.innerText;
+  html = html.replace(/\$br\$/g, '\n');
+  html = html.replace(/\n\s*\n\s*\n/g, '\n\n');
+  return html.split(/\r?\n/).map(row => row.trim().split(/\s+/).join(' ')).join('\n').trim();
 }
 
 async function generateText(msg) {
@@ -79,6 +87,12 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
         "https://lh5.googleusercontent.com/itq66nh65lfCick8cJ-OPuqZ8OUDTIxjCc25dkc4WUT1JG8XG3z6-eboCu63_uDXSqMnLRdlvQ=s128-h128-e365",
       onClick: function(event){
 
+        gmail.observe.on("compose", function(compose, type) {
+
+          // type can be compose, reply or forward
+          console.log('api.dom.compose object:', compose, 'type is:', type );  // gmail.dom.compose object
+        });
+        
         try{
           var email_id = gmail.new.get.email_id();
 
@@ -119,7 +133,7 @@ async function showModal(msg, composeView) {
 
   modal.style.zIndex = "1000";
   modal.style.width = "600px";
-  modal.style.height = "550px";
+  modal.style.height = "530px";
   modal.style.borderRadius = "20px";
 
   // create the backdrop element
@@ -301,7 +315,7 @@ async function showModal(msg, composeView) {
 
     if (but_act == 1) {
 
-      modal.style.height = "780px"
+      modal.style.height = "760px"
 
       container.removeChild(details);
       container.removeChild(desc_input);
@@ -314,7 +328,6 @@ async function showModal(msg, composeView) {
       container.appendChild(desc_input);
       container.appendChild(tone_p);
       container.appendChild(tone);
-      container.appendChild(line)
       container.appendChild(num_sent);
       container.appendChild(dropdown)
       container.appendChild(message)
@@ -322,7 +335,7 @@ async function showModal(msg, composeView) {
     }else {
 
       // Adjust the height of the container element
-      modal.style.height = "620px"
+      modal.style.height = "580px"
 
       to_hide = 1
 
@@ -335,26 +348,27 @@ async function showModal(msg, composeView) {
       container.appendChild(desc_input)
       container.appendChild(tone_p)
       container.appendChild(tone)
-      container.appendChild(line)
       container.appendChild(num_sent);
       container.appendChild(dropdown)
     }
     
   } else {
+    tick = 0
+
 
     if (but_act == 1) {
-      modal.style.height = "730px"
+      modal.style.height = "690px"
       // hide the email summary text
       to_hide = 0
       container.removeChild(sum_input);
-      container.removeChild(dropdown);
-      container.removeChild(num_sent);
+      //container.removeChild(dropdown);
+      //container.removeChild(num_sent);
     }
 
     else {
         // hide the email summary text
         to_hide = 0
-        modal.style.height = "550px";
+        modal.style.height = "530px";
 
       container.removeChild(sum_input);
     }
@@ -466,7 +480,6 @@ async function showModal(msg, composeView) {
   line.style.marginBottom = "0px";
 
 
-  container.append(line)
 
   // create the number of sentences element
   var num_sent = document.createElement("p");
@@ -477,6 +490,8 @@ async function showModal(msg, composeView) {
 
 
   num_sent.style.marginRight = "10px";
+  num_sent.style.marginLeft = "20px";
+
   container.appendChild(num_sent);
 
   // create the dropdown element
@@ -624,12 +639,18 @@ spinner.style.height = "20px";
 spinner.style.animation = "spin 2s linear infinite";
 container.appendChild(spinner);
 
+var insert = 0
+
 
 
 
 // Add the spinner to the button
 
   generateButton.addEventListener("click", async function() {
+    if (insert == 1) {
+      container.removeChild(insertButton)
+      insert = 0
+    }
     generated_email.value = ""; //Add this line
 
     generated_email.readOnly = true;
@@ -646,13 +667,13 @@ container.appendChild(spinner);
 
 
     if (tick == 1) {
-      modal.style.height = "780px"
+      modal.style.height = "740px"
       but_act = 1
       container.appendChild(message)
       container.appendChild(generated_email)
     }
     else {
-    modal.style.height = "720px"
+    modal.style.height = "680px"
     but_act = 1
     container.appendChild(message)
     container.appendChild(generated_email)
@@ -667,6 +688,7 @@ container.appendChild(spinner);
       console.log(msg + '\n' + desc_input.value)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
+      insert = 1
 
 
 
@@ -675,14 +697,18 @@ container.appendChild(spinner);
       var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ".");
       generated_email.value = response.trim();
       container.appendChild(insertButton);
+      insert = 1
+
 
 
     }
     else if (tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ".");
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ".");
       console.log(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
+      insert = 1
+
 
 
 
@@ -691,10 +717,12 @@ container.appendChild(spinner);
     }
     else {
 
-    var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ".");
+    var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ".");
     generated_email.value = response.trim();
 
     container.appendChild(insertButton);
+    insert = 1
+
 
     }
     generateButton.style.display = "block";
