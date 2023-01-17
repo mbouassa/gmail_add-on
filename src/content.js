@@ -3,7 +3,6 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
 
-const apiKey = "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"
 // console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
@@ -269,9 +268,14 @@ async function showModal(msg, composeView) {
   generated_email.style.border = "1px solid #4169E1";
   generated_email.style.fontSize = "15px";
   generated_email.style.resize = "none";
+  generated_email.style.display = "block"
 
   generated_email.style.borderRadius = "20px"
   generated_email.style.backgroundColor = "#f0f0f0";
+
+  
+
+
   var tick = 0
 
   checkbox.addEventListener("click", async function() {
@@ -527,6 +531,9 @@ async function showModal(msg, composeView) {
 
   container.appendChild(generateButton);
 
+  
+
+
   // create the insert email button
   var insertButton = document.createElement("button");
   insertButton.textContent = "Insert Email";
@@ -575,11 +582,44 @@ async function showModal(msg, composeView) {
 
   var but_act = 0;
 
+  
+
+//Create the loading spinner
+var spinner = document.createElement("div");
+spinner.className = "spinner-border text-primary";
+spinner.style.display = "none";
+spinner.style.position = "absolute";
+spinner.style.bottom = "20px";
+spinner.style.right = "20px";
+spinner.style.border = "8px solid #f3f3f3"; 
+spinner.style.borderTop = "8px solid #28a745"; 
+spinner.style.borderRight = "8px solid #28a745"; 
+spinner.style.borderBottom = "8px solid #28a745"; 
+spinner.style.borderRadius = "50%"
+spinner.style.width= "20px";
+spinner.style.height = "20px";
+spinner.style.animation = "spin 2s linear infinite";
+container.appendChild(spinner);
+
+
 
 
 // Add the spinner to the button
 
   generateButton.addEventListener("click", async function() {
+    generated_email.value = ""; //Add this line
+
+    generated_email.readOnly = true;
+
+
+    generateButton.style.display = "none";
+
+    spinner.style.display = "block";
+
+
+
+
+
 
 
     if (tick == 1) {
@@ -630,9 +670,15 @@ async function showModal(msg, composeView) {
 
     var response = await generateText(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ".");
     generated_email.value = response.trim();
+
     container.appendChild(insertButton);
 
     }
+    generateButton.style.display = "block";
+
+    spinner.style.display = "none";
+    generated_email.readOnly = false;
+
 
   });
   // add the modal to the document
