@@ -680,7 +680,7 @@ var insert = 0
     console.log(tone.options[tone.selectedIndex].text)
 
     if (dropdown.options[dropdown.selectedIndex].text == "" && tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ":");
+      var response = await generateText(msg + '\n' + desc_input.value + ". Make it medium:");
       console.log(msg + '\n' + desc_input.value)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
