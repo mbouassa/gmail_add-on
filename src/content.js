@@ -3,7 +3,6 @@ import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 const {config} = require('./config.js');
 
-console.log(config.API_KEY);
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
 
@@ -87,30 +86,27 @@ InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
         "https://lh5.googleusercontent.com/itq66nh65lfCick8cJ-OPuqZ8OUDTIxjCc25dkc4WUT1JG8XG3z6-eboCu63_uDXSqMnLRdlvQ=s128-h128-e365",
       onClick: function(event){
 
-        gmail.observe.on("compose", function(compose, type) {
-
-          // type can be compose, reply or forward
-          console.log('api.dom.compose object:', compose, 'type is:', type );  // gmail.dom.compose object
-        });
-        
-        try{
-          var email_id = gmail.new.get.email_id();
-
-          var gmail_dom = gmail.dom.email(email_id);
-          var body = gmail_dom.body();
-          console.log(body);
-        }catch(e){
-          console.log(e);
-        }
-
-        if(typeof body === 'undefined') {
+        var url = window.location.href;
+        if(url.indexOf("compose") > -1){
           showModal("", composeView)
-        }
-        else {
-        console.log(body)
-        var new_bdy = RemoveHTMLTags(body);
-        console.log(new_bdy)
-        showModal(new_bdy, composeView);
+        }else{
+          try{
+            var email_id = gmail.new.get.email_id();
+            var gmail_dom = gmail.dom.email(email_id);
+            var body = gmail_dom.body();
+          }catch(e){
+            console.log(e);
+          }
+  
+          if(typeof body === 'undefined') {
+            showModal("", composeView)
+          }
+          else {
+            console.log(body)
+            var new_bdy = RemoveHTMLTags(body);
+            console.log(new_bdy)
+            showModal(new_bdy, composeView);
+          }
         }
       }
  
