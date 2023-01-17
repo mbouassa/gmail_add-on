@@ -1,9 +1,9 @@
 import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
+const {config} = require('./config.js');
 
-
-// console.log(apiKey)
+console.log(config.API_KEY);
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
 
@@ -23,7 +23,7 @@ async function generateText(msg) {
     method: 'POST',
     headers: {
        'Content-Type': 'application/json',
-       'Authorization': `Bearer ${apiKey}`,
+       'Authorization': `Bearer ${config.API_KEY}`,
       },
       body: JSON.stringify({
         prompt: msg,
@@ -49,7 +49,7 @@ async function generateSummary(msg) {
     method: 'POST',
     headers: {
        'Content-Type': 'application/json',
-       'Authorization': `Bearer ${apiKey}`,
+       'Authorization': `Bearer ${config.API_KEY}`,
       },
       body: JSON.stringify({
         prompt: msg + "/nGenerate a summary of the above email:",
