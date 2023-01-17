@@ -2,8 +2,8 @@ import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
 
+const apiKey = "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"
 
-// console.log(apiKey)
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
 
@@ -190,7 +190,7 @@ async function showModal(msg, composeView) {
 
   // create the text element
   var context = document.createElement("p");
-  context.textContent = "Email Context:";
+  context.textContent = "Previous Email:";
   context.style.fontSize = "15px"
   container.appendChild(context);
   
@@ -244,7 +244,7 @@ async function showModal(msg, composeView) {
   // sum_input.type = "textarea";
   sum_input.style.width = "590px"
   sum_input.style.resize = "none";
-  sum_input.style.fontSize = "15px"
+  sum_input.style.fontSize = "25px"
 
 
   sum_input.style.height = "50px"
@@ -254,6 +254,22 @@ async function showModal(msg, composeView) {
   sum_input.style.padding = "10px"
   sum_input.readOnly = true;
   sum_input.disabled = true;
+  sum_input.value = '.';
+  var sum = 0;
+
+  var dotCount = 0;
+  var dotInterval = setInterval(function(){
+      if(dotCount === 4) {
+          dotCount = 0;
+      }
+      var dots = '.'.repeat(dotCount);
+      sum_input.value = dots;
+      dotCount++;
+  }, 500);
+
+
+
+
   message.textContent = "Email is currently generating...";
   message.style.fontSize = "15px"
   message.style.marginRight = "10px";
@@ -343,9 +359,16 @@ async function showModal(msg, composeView) {
       container.removeChild(sum_input);
     }
   }
-  if(sum_input.value == ""){
+  //if(sum_input.value == ""){
+    if (sum == 0){
     var summary = await generateSummary(msg);
+    clearInterval(dotInterval);
+    sum_input.style.fontSize = "15px"
+
+
+
     sum_input.value = summary.trim();
+    sum = 1
   }
 
   
@@ -361,7 +384,7 @@ async function showModal(msg, composeView) {
 
   // create the text input element
   var desc_input = document.createElement("input");
-  desc_input.placeholder = "Write a reply to this email..."
+  desc_input.placeholder = "Example: Write a reply to this email saying that I am interested by the job opportunity"
   desc_input.type = "text";
   desc_input.style.width = "590px"
   desc_input.style.height = "40px"
