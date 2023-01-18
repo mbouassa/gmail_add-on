@@ -236,7 +236,7 @@ async function showModal(msg, composeView) {
 
   // con_input.type = "text";
   con_input.style.borderImage = "linear-gradient(to right, #4169E1, #7B68EE) 1";
-  con_input.style.width = "590px"
+  con_input.style.width = "585px"
   con_input.style.height = "120px"
 
   con_input.style.border = "1px solid #4169E1";
@@ -273,7 +273,7 @@ async function showModal(msg, composeView) {
   // create the text input element
   var sum_input = document.createElement("textarea");
   // sum_input.type = "textarea";
-  sum_input.style.width = "590px"
+  sum_input.style.width = "585px"
   sum_input.style.resize = "none";
   sum_input.style.fontSize = "25px"
 
@@ -310,7 +310,7 @@ async function showModal(msg, composeView) {
   var generated_email = document.createElement("textarea");
   // generated_email.type = "text";
   generated_email.style.padding = "10px"
-  generated_email.style.width = "590px"
+  generated_email.style.width = "585px"
   generated_email.style.height = "100px"
   generated_email.style.border = "1px solid #4169E1";
   generated_email.style.fontSize = "15px";
