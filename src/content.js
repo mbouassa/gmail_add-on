@@ -98,7 +98,7 @@ img.onload = function() {
 
 
 
-InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
+InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
   sdk.Compose.registerComposeViewHandler((composeView) => {
     
     composeView.addButton({

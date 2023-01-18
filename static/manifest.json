@@ -1,6 +1,6 @@
 {
-  "name": "Example Gmail Extension",
-  "description": "Example extension showing use of the Streak Gmail SDK",
+  "name": "Filos Chat",
+  "description": "Chrome extension to generate email responses using GPT-3",
   "version": "0.1",
   "content_scripts": [
     {
