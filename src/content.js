@@ -25,6 +25,7 @@ function RemoveHTMLTags(html) {
 async function generateText(msg) {
   
 
+  
   // Make the API request
   const response = await fetch('https://api.openai.com/v1/completions', {
     method: 'POST',
@@ -77,13 +78,33 @@ async function generateSummary(msg) {
 
 
 
+// Create a canvas element
+var canvas = document.createElement('canvas');
+canvas.width = 30;
+canvas.height = 30;
+
+// Create an image element
+var img = new Image();
+
+// Set the source of the image
+img.src = 'F.png';
+
+// Draw the image on the canvas
+var ctx = canvas.getContext('2d');
+img.onload = function() {
+  ctx.drawImage(img, 0, 0, 30, 30);
+  console.log(canvas.toDataURL());
+}
+
+
+
 InboxSDK.load(2, "Hello World!", { timeout: 30000 }).then((sdk) => {
   sdk.Compose.registerComposeViewHandler((composeView) => {
     
     composeView.addButton({
       title: "Generate Email Response",
       iconUrl:
-        "https://lh5.googleusercontent.com/itq66nh65lfCick8cJ-OPuqZ8OUDTIxjCc25dkc4WUT1JG8XG3z6-eboCu63_uDXSqMnLRdlvQ=s128-h128-e365",
+        "https://filoschat.com/F.png",
       onClick: function(event){
 
         var url = window.location.href;
