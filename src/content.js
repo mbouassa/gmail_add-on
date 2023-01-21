@@ -456,7 +456,7 @@ async function showModal(msg, composeView, newEmail) {
   if(newEmail == true){
     desc_input.value = "Write an email saying...";
   }else{
-    desc_input.value = "Write a response email saying...";
+    desc_input.value = "Write a response to this email saying...";
   }
 
 
