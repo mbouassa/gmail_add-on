@@ -1,10 +1,15 @@
 import * as InboxSDK from '@inboxsdk/core';
 import { Configuration, OpenAIApi } from "openai";
 import "gmail-js";
+
+
+
 const {config} = require('./config.js');
 
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
+
+console.log(gmail.check.is_thread())
 
 
 function RemoveHTMLTags(html) {
@@ -115,6 +120,15 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
             var email_id = gmail.new.get.email_id();
             var gmail_dom = gmail.dom.email(email_id);
             var body = gmail_dom.body();
+
+            // Create a regular expression to match the last message
+
+            
+            
+            
+
+
+
           }catch(e){
             console.log(e);
           }
@@ -123,10 +137,27 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
             showModal("", composeView)
           }
           else {
-            console.log(body)
+            const bodyText = body.split("On");
+            
             var new_bdy = RemoveHTMLTags(body);
+            const lastMessageRegex = /(On.*<\S+@\S+>\swrote:|Le.*<\S+@\S+>\sa\sécrit\s:)/g;
             console.log(new_bdy)
-            showModal(new_bdy, composeView);
+            if ((new_bdy.match(lastMessageRegex)) == null) {
+              showModal(new_bdy, composeView);
+
+
+            }
+            else {
+
+            // Extract the last message
+            const lastMessage = new_bdy.match(lastMessageRegex)[0];
+            console.log(lastMessage)
+            console.log(new_bdy.split(lastMessage))
+
+            console.log(lastMessage);
+            
+            showModal(new_bdy.split(lastMessage)[0], composeView);
+            }
           }
         }
       }

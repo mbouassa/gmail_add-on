@@ -21,9 +21,11 @@
   },
   "homepage": "https://github.com/InboxSDK/hello-world#readme",
   "dependencies": {
+    "@googleapis/gmail": "^1.1.0",
     "@inboxsdk/core": "^0.2.20",
     "cheerio": "^1.0.0-rc.12",
     "gmail-js": "^1.1.6",
+    "nltk": "^0.0.1",
     "sharp": "^0.31.3"
   },
   "devDependencies": {
