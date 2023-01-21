@@ -2,6 +2,15 @@
   "name": "Filos Chat",
   "description": "Chrome extension to generate email responses using GPT-3",
   "version": "0.1",
+  "browser_action": {
+    "default_icon": "F.png"
+  },
+  "icons":{
+    "16":"F.png",
+    "32": "F.png",
+    "48": "F.png",
+    "128": "F.png"
+  },
   "content_scripts": [
     {
       "matches": [

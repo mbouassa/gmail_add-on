@@ -5,12 +5,8 @@ import "gmail-js";
 
 
 const {config} = require('./config.js');
-
 const GmailFactory = require("gmail-js");
 const gmail = new GmailFactory.Gmail();
-
-console.log(gmail.check.is_thread())
-
 
 function RemoveHTMLTags(html) {
   // var regX = /(<([^>]+)>)/ig;
@@ -113,8 +109,10 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
       onClick: function(event){
 
         var url = window.location.href;
+        var newEmail;
         if(url.indexOf("compose") > -1){
-          showModal("", composeView)
+          newEmail = true;
+          showModal("", composeView, newEmail)
         }else{
           try{
             var email_id = gmail.new.get.email_id();
@@ -122,19 +120,13 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
             var body = gmail_dom.body();
 
             // Create a regular expression to match the last message
-
-            
-            
-            
-
-
-
           }catch(e){
             console.log(e);
           }
   
           if(typeof body === 'undefined') {
-            showModal("", composeView)
+            newEmail = true;
+            showModal("", composeView, newEmail);
           }
           else {
             const bodyText = body.split("On");
@@ -143,7 +135,8 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
             const lastMessageRegex = /(On.*<\S+@\S+>\swrote:|Le.*<\S+@\S+>\sa\sécrit\s:)/g;
             console.log(new_bdy)
             if ((new_bdy.match(lastMessageRegex)) == null) {
-              showModal(new_bdy, composeView);
+              newEmail = false;
+              showModal(new_bdy, composeView, newEmail);
 
 
             }
@@ -155,8 +148,8 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
             console.log(new_bdy.split(lastMessage))
 
             console.log(lastMessage);
-            
-            showModal(new_bdy.split(lastMessage)[0], composeView);
+            newEmail = false;
+            showModal(new_bdy.split(lastMessage)[0], composeView,newEmail);
             }
           }
         }
@@ -167,7 +160,7 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
   });
 });
 
-async function showModal(msg, composeView) {
+async function showModal(msg, composeView, newEmail) {
   console.log(msg)
   // create the modal element
   var modal = document.createElement("div");
@@ -444,9 +437,9 @@ async function showModal(msg, composeView) {
 
   container.appendChild(details);
 
+
   // create the text input element
   var desc_input = document.createElement("input");
-  desc_input.placeholder = "Example: Write a reply to this email saying that I am interested by the job opportunity"
   desc_input.type = "text";
   desc_input.style.width = "590px"
   desc_input.style.height = "40px"
@@ -459,6 +452,12 @@ async function showModal(msg, composeView) {
   desc_input.style.borderRadius = "20px"
   desc_input.style.backgroundColor = "#f0f0f0";
   desc_input.style.marginBottom = "10px";
+
+  if(newEmail == true){
+    desc_input.value = "Write an email saying...";
+  }else{
+    desc_input.value = "Write a response email saying...";
+  }
 
 
   container.appendChild(desc_input);
@@ -726,14 +725,14 @@ var insert = 0
     container.appendChild(message)
     container.appendChild(generated_email)
     }
-    console.log(msg);
-    console.log(msg + '\n' + desc_input.value)
+    console.log(con_input.value);
+    console.log(con_input.value + '\n' + desc_input.value)
     console.log("mmmmmmmmm")
     console.log(tone.options[tone.selectedIndex].text)
 
     if (dropdown.options[dropdown.selectedIndex].text == "" && tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it medium:");
-      console.log(msg + '\n' + desc_input.value)
+      var response = await generateText(con_input.value + '\n' + desc_input.value + ". Make it medium:");
+      console.log(con_input.value + '\n' + desc_input.value)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
       insert = 1
@@ -742,7 +741,7 @@ var insert = 0
 
     }
     else if (dropdown.options[dropdown.selectedIndex].text == "" ){
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ":");
+      var response = await generateText(con_input.value + '\n' + desc_input.value + ". Make it " + tone.options[tone.selectedIndex].text + ":");
       generated_email.value = response.trim();
       container.appendChild(insertButton);
       insert = 1
@@ -751,8 +750,8 @@ var insert = 0
 
     }
     else if (tone.options[tone.selectedIndex].text == "") {
-      var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ":");
-      console.log(msg + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
+      var response = await generateText(con_input.value + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ":");
+      console.log(con_input.value + '\n' + desc_input.value + ". Make it" + dropdown.options[dropdown.selectedIndex].text)
       generated_email.value = response.trim();
       container.appendChild(insertButton);
       insert = 1
@@ -765,7 +764,7 @@ var insert = 0
     }
     else {
 
-    var response = await generateText(msg + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ":");
+    var response = await generateText(con_input.value + '\n' + desc_input.value + ". Make it " + dropdown.options[dropdown.selectedIndex].text + ". Make it " + tone.options[tone.selectedIndex].text + ":");
     generated_email.value = response.trim();
 
     container.appendChild(insertButton);
