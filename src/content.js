@@ -105,7 +105,7 @@ InboxSDK.load(2, 'sdk_Filoschat_76494892c2', { timeout: 30000 }).then((sdk) => {
     composeView.addButton({
       title: "Generate Email Response",
       iconUrl:
-        "https://filoschat.com/F.png",
+        "https://jonathaanh.github.io/filoschat/F.png",
       onClick: function(event){
 
         var url = window.location.href;
